@@ -1,0 +1,9 @@
+<div id="board-wrapper" #boardWrapper>
+    <canvas #board id="board"></canvas>
+</div>
+<div class="values-wrapper">
+    <div *ngFor="let value of values;let ind = index" 
+        [ngClass]="{'swapped': (ind===cmpInd1 || ind===cmpInd2)&&swapped,'compared': (ind===cmpInd1 || ind===cmpInd2)&& !swapped , 'value': true}">
+         {{value}} 
+    </div>
+</div>

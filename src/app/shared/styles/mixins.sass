@@ -1,0 +1,9 @@
+@mixin glow($name, $fromColor, $toColor)
+    -webkit-animation: $name 1s ease-in-out infinite alternate
+    -moz-animation: $name 1s ease-in-out infinite alternate
+    animation: $name 1s ease-in-out infinite alternate
+    @-webkit-keyframes #{$name} 
+        from 
+            text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px $fromColor, 0 0 40px $fromColor, 0 0 50px $fromColor, 0 0 60px $fromColor, 0 0 70px $fromColor
+        to 
+            text-shadow: 0 0 20px #fff, 0 0 30px $toColor, 0 0 40px $toColor, 0 0 50px $toColor, 0 0 60px $toColor, 0 0 70px $toColor, 0 0 80px $toColor
