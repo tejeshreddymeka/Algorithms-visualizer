@@ -1,4 +1,5 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, Input, Output, EventEmitter, HostListener } from '@angular/core';
+import { BoardColoringParams } from 'src/app/models/board-coloring-params';
 
 @Component({
   selector: 'app-histogram',
@@ -14,18 +15,15 @@ export class HistogramComponent implements OnInit, AfterViewInit {
 
   @ViewChild("board", {static: false}) public  boardElementRef: ElementRef;
   @ViewChild("boardWrapper", {static: false}) public boardWrapperElementRef: ElementRef;
-  private boardContext: CanvasRenderingContext2D;
+  boardContext: CanvasRenderingContext2D;
   private board: HTMLCanvasElement;
+  
+  private boardColoringParams: BoardColoringParams = new BoardColoringParams();
 
   private initX: number;
   private initY: number;
   private barWidth: number;
   private barUnitLength: number;
-
-  private cmpInd1 = -1;
-  private cmpInd2 = -1;
-  private swapped:boolean = false;
-
   constructor() { }
 
   ngOnInit() {
@@ -43,13 +41,13 @@ export class HistogramComponent implements OnInit, AfterViewInit {
 
   adjustBoardParams(){
     const boardWrapper: Element = this.boardWrapperElementRef.nativeElement;
-    this.board.width = boardWrapper.clientWidth - 18;
+    this.board.width = boardWrapper.clientWidth;
     this.board.height = boardWrapper.clientHeight;
-    this.barWidth = (this.board.width - 2*this.values.length)/this.values.length;
-    this.barUnitLength = (this.board.height - 30)/Math.max(...this.values);
+    this.barWidth = (this.board.width - 2*(this.values.length+2))/this.values.length;
+    this.barUnitLength = (this.board.height - 50)/Math.max(...this.values);
     this.barWidth = Math.min(this.barWidth,10);
     this.initX = (this.board.width - 2 * this.values.length - this.barWidth * this.values.length)/2 + 2;
-    this.initY = 20;
+    this.initY = 40;
   }
 
   initBoard(){
@@ -59,55 +57,76 @@ export class HistogramComponent implements OnInit, AfterViewInit {
     this.drawBoard(); 
   }
 
-  drawBoard(ind1:number = null, ind2:number = null, swapped:boolean = false){
-    if(ind1!==null && ind2!==null)
-    {
-      this.cmpInd1 = ind1;
-      this.cmpInd2 = ind2;
-      this.swapped = swapped;
-    }
-
-    this.boardContext.clearRect(0,0,this.board.width, this.board.height);
+  drawBoard(params: BoardColoringParams = new BoardColoringParams()){
+    this.boardColoringParams = params;
+    this.boardContext.clearRect(0,0,this.board.width,this.board.height);
     let x = this.initX , y = this.initY;
     for(let ind=0;ind<this.values.length; ind++)
     {
 
       this.boardContext.rotate(-Math.PI/2);
       this.boardContext.textAlign = "center";
-      if((ind1!==null && ind1===ind) || (ind2!==null && ind2===ind))
+      if((params.cmpInd1!==null && params.cmpInd1===ind) || (params.cmpInd2!==null && params.cmpInd2===ind))
       {
-        if(swapped)
-        {
+        if(params.swapped)
           this.boardContext.fillStyle = "#990000";
-        }
-        else
-        {
+        else if(params.cmpInd1===ind)
           this.boardContext.fillStyle = "#232442";
-        }
+        else if(params.cmpInd2===ind)
+          this.boardContext.fillStyle = "#1b4a96";
         this.boardContext.font = "bold 10pt Courier";
-      }
-      else{
-        this.boardContext.fillStyle = "black";
-        this.boardContext.font = "normal 8pt Courier";
-      }
-      this.boardContext.fillText(this.values[ind].toString(),-9,x+8);
-      this.boardContext.rotate(Math.PI/2);
-      if((ind1!==null && ind1===ind) || (ind2!==null && ind2===ind))
-      {
-        if(swapped)
-        {
-          this.boardContext.fillStyle = "#990000";
-        }
-        else
-        {
-          this.boardContext.fillStyle = "#232442";
-        }
       }
       else
       {
-        this.boardContext.fillStyle = "grey";
+        this.boardContext.fillStyle = "black";
+        this.boardContext.font = "normal 8pt Courier";
       }
-      this.boardContext.fillRect(x,y,this.barWidth, this.values[ind]*this.barUnitLength);
+      this.boardContext.fillText(this.values[ind].toString(),-15,x+8);
+      this.boardContext.rotate(Math.PI/2);
+      if((params.cmpInd1!==null && params.cmpInd1===ind) || (params.cmpInd2!==null && params.cmpInd2===ind))
+      {
+        if(params.swapped)
+          this.boardContext.fillStyle = "#990000";
+        else if(params.cmpInd1===ind)
+          this.boardContext.fillStyle = "#232442";
+        else if(params.cmpInd2===ind)
+          this.boardContext.fillStyle = "#143873";
+      }
+      else
+        this.boardContext.fillStyle = "grey";
+      var barHeight = this.values[ind]*this.barUnitLength;
+      if(params.pivotInd!==null && params.pivotInd === ind)
+        this.boardContext.fillStyle = "black";
+      this.boardContext.fillRect(x,y,this.barWidth, barHeight);
+      
+      if(params.leftBoundary===ind || params.rightBoundary=== ind)
+      {
+          this.boardContext.beginPath();
+          this.boardContext.moveTo( x, y - 14);
+          this.boardContext.lineTo( x + this.barWidth, y - 14);
+          this.boardContext.lineTo( (2*x + this.barWidth)/2, y - 2);
+          this.boardContext.lineTo( x, y - 14);
+          this.boardContext.closePath();
+          if(params.leftBoundary === ind)
+            this.boardContext.fillStyle = "green";
+          else if(params.rightBoundary === ind)
+            this.boardContext.fillStyle = "red";
+          this.boardContext.fill();
+      }
+      if (params.leftBoundary2 === ind || params.rightBoundary2 === ind)
+      {
+          this.boardContext.beginPath();
+          this.boardContext.moveTo( x, y - 14);
+          this.boardContext.lineTo( x + this.barWidth, y - 14);
+          this.boardContext.lineTo( (2*x + this.barWidth)/2, y - 2);
+          this.boardContext.lineTo( x, y - 14);
+          this.boardContext.closePath();
+          if(params.leftBoundary2 === ind)
+            this.boardContext.fillStyle = "blue";
+          else if(params.rightBoundary2 === ind)
+            this.boardContext.fillStyle = "orange";
+          this.boardContext.fill();
+      }
       x += this.barWidth + 2 
     }
   }

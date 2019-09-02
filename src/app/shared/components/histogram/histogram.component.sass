@@ -1,26 +1,74 @@
+@mixin triangle($pesudoElement,$firstBorderWidth,$secondBorderWidth,$color,$top,$right,$bottom,$left,$direction)
+    position: relative
+    &::#{$pesudoElement}
+        position: absolute
+        content: ""
+        @if $top != -1
+            top: $top
+        @if $right != -1
+            right: $right
+        @if $bottom != -1
+            bottom: $bottom
+        @if $left != -1
+            left: $left
+        width: 0
+        height: 0
+        @if $direction == "up"
+            border-left: $firstBorderWidth solid transparent
+            border-right: $firstBorderWidth solid transparent
+            border-bottom: $secondBorderWidth solid $color 
+
+        @if $direction == "down"
+            border-left: $firstBorderWidth solid transparent
+            border-right: $firstBorderWidth solid transparent
+            border-top: $secondBorderWidth solid $color
+
 #board-wrapper
     width: 100%
     height: 400px 
     background-color: white 
 .values-wrapper
-    width:100%
+    width: 100%
     margin-top: 20px
     .value
         display: inline-block
         float: left
-        padding: 10px
+        padding: 14px
         border: 2px solid white
-        color: white
+        color: black 
+        background-color: white
         font-size: 12px
-        margin: 4px 2px 4px 2px
+        border-radius: 4px
+        margin: 4px 2px 22px 2px
     .swapped
-        background: white
-        color: #990000
+        background-color: #0d0d26
+        color: white 
         font-weight: bold
         border-radius: 4px
         border: 2px solid #ed594e
     .compared
-        background: white
         font-weight: bold
-        color: #0d0d26
+        color: white 
         border-radius: 4px
+    .compared1
+        background-color: #0d0d26
+    .compared2
+        background-color: #143873
+
+    .pivot
+        background-color: black
+        font-weight: bold
+        color: white 
+        border-radius: 4px
+
+    .leftBoundary
+        @include triangle(before,6px,12px,green, -1, -1, -20px, -4px, "up")
+        
+    .rightBoundary
+        @include triangle(after,6px,12px,red, -1, -1, -20px, -1, "up" )
+
+    .leftBoundary2
+        @include triangle(before,6px,12px,blue, -20px, -1, -1 , -4px,"down" )
+        
+    .rightBoundary2
+        @include triangle(after,6px,12px,orange, -20px, -1, -1, -1, "down" )

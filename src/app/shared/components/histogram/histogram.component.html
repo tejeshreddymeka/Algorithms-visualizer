@@ -3,7 +3,18 @@
 </div>
 <div class="values-wrapper">
     <div *ngFor="let value of values;let ind = index" 
-        [ngClass]="{'swapped': (ind===cmpInd1 || ind===cmpInd2)&&swapped,'compared': (ind===cmpInd1 || ind===cmpInd2)&& !swapped , 'value': true}">
+        [ngClass]="{
+            'swapped': (ind=== boardColoringParams.cmpInd1 || ind=== boardColoringParams.cmpInd2)&& boardColoringParams.swapped,
+            'compared': (ind=== boardColoringParams.cmpInd1 || ind=== boardColoringParams.cmpInd2)&& !boardColoringParams.swapped , 
+            'compared1': (ind=== boardColoringParams.cmpInd1 )&& !boardColoringParams.swapped , 
+            'compared2': (ind=== boardColoringParams.cmpInd2 )&& !boardColoringParams.swapped , 
+            'leftBoundary' : (boardColoringParams.leftBoundary === ind),
+            'rightBoundary' : (boardColoringParams.rightBoundary === ind),
+            'leftBoundary2' : (boardColoringParams.leftBoundary2 === ind),
+            'rightBoundary2' : (boardColoringParams.rightBoundary2 === ind),
+            'pivot' : (boardColoringParams.pivotInd === ind),
+            'value': true
+        }">
          {{value}} 
     </div>
 </div>
