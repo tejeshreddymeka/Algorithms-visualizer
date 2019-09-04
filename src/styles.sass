@@ -1,7 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
 @import url('https://fonts.googleapis.com/css?family=Tangerine&display=swap')
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css'
+@import "../node_modules/prismjs/plugins/toolbar/prism-toolbar.css"
+@import "../node_modules/prismjs/themes/prism-okaidia"
 @import ./src/app/shared/styles/mixins
+
+::-webkit-scrollbar 
+  width: 10px
+
+/* Track */
+::-webkit-scrollbar-track 
+    background: rgba(0,0,0,1)
+    border-radius: 10px
+ 
+/* Handle */
+::-webkit-scrollbar-thumb 
+  background: #4b4a88
+  border-radius: 10px
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover 
+  background: #34335f
+
 
 .submain-container
     .header

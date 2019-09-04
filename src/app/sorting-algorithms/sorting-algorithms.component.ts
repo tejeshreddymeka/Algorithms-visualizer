@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { HistogramComponent } from '../shared/components/histogram/histogram.component';
 import { BoardColoringParams } from '../models/board-coloring-params';
+import { SortingAlgorithms } from '../algorithms/sorting-algorithms/code';
+import { HighlightService } from '../services/highlight.service';
 
 @Component({
   selector: 'app-sorting-algorithms',
@@ -9,10 +11,14 @@ import { BoardColoringParams } from '../models/board-coloring-params';
 })
 
 export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
-  algorithms: any[] = [{name:'Bubble Sort', run: () => this.bubbleSort(this.values)},
-                     {name:'Quick Sort', run: () => this.quickSort(this.values)},
-                     {name: 'Merge Sort', run: () => this.mergeSort(this.values)}];
-  seletectedAlgorithm:string = this.algorithms[0].name;
+  algorithms: any = [];
+  algorithmNames: string[] = [
+    'Bubble Sort',
+    'Insertion Sort',
+    'Quick Sort',
+    'Merge Sort',
+  ];
+  selectedAlgorithm:string = this.algorithmNames[0];
   samplesCount:number = 20;
   maxSamplesCount:number = 30;
   minValue:number = 1;
@@ -23,11 +29,24 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
   visualizing:boolean = false;
   customPanelOpened:boolean = false;
   customValue:number = null;
+  codePanelOpened:boolean = false;
 
   board: HTMLCanvasElement;
 
+  sortingAlgorithms:SortingAlgorithms = new SortingAlgorithms();
+  algorithmCode:string = '';
+
   @ViewChild("histogram", {static: false}) histogram : HistogramComponent;
-  constructor() { }
+  constructor(
+    private highlightService:HighlightService
+  ) {
+    this.algorithms = {
+      'Bubble Sort': {name: 'Bubble Sort', run: () => this.bubbleSort(this.values), code: this.sortingAlgorithms.bubbleSortCode},
+      'Insertion Sort': {name: 'Insertion Sort', run: () => this.insertionSort(this.values), code: this.sortingAlgorithms.insertionSort},
+      'Quick Sort': {name: 'Quick Sort', run: () => this.quickSort(this.values), code: this.sortingAlgorithms.quickSort},
+      'Merge Sort': {name: 'Merge Sort', run: () => this.mergeSort(this.values), code: this.sortingAlgorithms.mergeSort}
+    };
+   }
 
   ngOnInit() {
     for(let rep=1;rep<=this.samplesCount;rep++)
@@ -36,7 +55,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     }
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
   }
 
   onHistogramReady($event: HTMLCanvasElement)
@@ -82,6 +101,13 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     this.customPanelOpened = !this.customPanelOpened;
     this.values = []
     this.histogram.boardContext.clearRect(0,0,this.board.width,this.board.height);
+    if(!this.customPanelOpened)
+      this.randomize();
+  }
+
+  toggleCodePanel(){
+    this.codePanelOpened = !this.codePanelOpened;
+    this.algorithmCode = this.highlightService.highlightCode(this.algorithms[this.selectedAlgorithm].code, 'cpp');
   }
 
   delay(ms : number)
@@ -134,10 +160,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       this.visualizing = false;
       return;
     }
-    console.log(this.seletectedAlgorithm);
-    var func = this.algorithms.find((algorithm: any) => algorithm.name === this.seletectedAlgorithm);
-    console.log(func);
-    func.run();
+    this.algorithms[this.selectedAlgorithm].run();
   }
 
   // bubble Sort
@@ -201,17 +224,23 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       {
         i++;
         items[i] = [items[j], items[j] = items[i]][0];
-
-        params.cmpInd1 = i;params.cmpInd2 = j;params.swapped = true;
-        if(! await this.eachStep(items,params))return;
+        if(i!==j)
+        {
+          params.cmpInd1 = i;params.cmpInd2 = j;params.swapped = true;
+          if(! await this.eachStep(items,params))return;
+        }
       }
     }
+
     items[i+1] = [items[pivotInd], items[pivotInd] = items[i+1]][0];
 
     params.cmpInd1 = i+1; params.cmpInd2 = pivotInd; params.swapped = false;
     if(! await this.eachStep(items,params))return;
-    params.swapped = true;
-    if(! await this.eachStep(items,params))return;
+    if(i+1 !== pivotInd)
+    {
+      params.swapped = true;
+      if(! await this.eachStep(items,params))return;
+    }
     return i+1;
   }
   //quick sort end
@@ -238,7 +267,6 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       params.leftBoundary2 = m+1;
       params.rightBoundary2 = r;
       if(! await this.eachStep(arr,params))return arr;
-
       arr = await this.mergeSortUtil(arr, l, m); 
       arr = await this.mergeSortUtil(arr, m+1, r); 
       return await this.merge(arr, l, m, r); 
@@ -303,6 +331,43 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     } 
     return arr;
   } 
-    
   //merge sort end
+
+  //Insertion sort
+  async insertionSort(array:number[])
+  {
+    this.visualizing = true;
+    let params:BoardColoringParams = new BoardColoringParams();
+    let key:number;
+    for(let ind1 = 0;ind1<array.length; ++ind1)
+    {
+      if(!this.visualizing)return;
+      key = array[ind1];
+      let ind2 = ind1 - 1;
+      params.cmpInd1 = ind2;
+      params.cmpInd2 = ind2+1;
+      params.swapped = false;
+      await this.eachStep(array,params);
+      while(ind2>=0 && array[ind2] > key)
+      {
+
+        if(!this.visualizing)return;
+        array[ind2+1] = array[ind2];
+        array[ind2] = key;
+
+        params.swapped = true;
+        await this.eachStep(array,params);
+
+        ind2--;
+
+        params.cmpInd1 = ind2;
+        params.cmpInd2 = ind2+1;
+        params.swapped = false;
+        await this.eachStep(array,params);
+      }
+      //array[ind2+1] = key;
+    }
+    this.visualizing = false;
+  }
+  //Insertion sort end
 }
