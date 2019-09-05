@@ -123,6 +123,13 @@
                 class="closeCodePanel">
                 X
             </button>
+            <div class="code-explanation-wrapper">
+                <div class="code-explanation-heading">{{selectedAlgorithm}}</div>
+                <pre class="code-explanation wrap-pre-tag-text"
+                    [innerHtml] = "algorithmExplanation"
+                >
+                </pre>
+            </div>
             <div class="code-wrapper">
                 <pre>
                 <code class="code" 

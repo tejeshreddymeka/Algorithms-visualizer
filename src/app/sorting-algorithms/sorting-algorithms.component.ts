@@ -17,6 +17,8 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     'Insertion Sort',
     'Quick Sort',
     'Merge Sort',
+    'Heap Sort',
+    'Selection Sort',
   ];
   selectedAlgorithm:string = this.algorithmNames[0];
   samplesCount:number = 20;
@@ -35,16 +37,19 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
 
   sortingAlgorithms:SortingAlgorithms = new SortingAlgorithms();
   algorithmCode:string = '';
+  algorithmExplanation:string = '';
 
   @ViewChild("histogram", {static: false}) histogram : HistogramComponent;
   constructor(
     private highlightService:HighlightService
   ) {
     this.algorithms = {
-      'Bubble Sort': {name: 'Bubble Sort', run: () => this.bubbleSort(this.values), code: this.sortingAlgorithms.bubbleSortCode},
-      'Insertion Sort': {name: 'Insertion Sort', run: () => this.insertionSort(this.values), code: this.sortingAlgorithms.insertionSort},
-      'Quick Sort': {name: 'Quick Sort', run: () => this.quickSort(this.values), code: this.sortingAlgorithms.quickSort},
-      'Merge Sort': {name: 'Merge Sort', run: () => this.mergeSort(this.values), code: this.sortingAlgorithms.mergeSort}
+      'Bubble Sort': {name: 'Bubble Sort', run: () => this.bubbleSort(this.values), code: this.sortingAlgorithms.bubbleSortCode, explanation: this.sortingAlgorithms.bubbleSortExplanation},
+      'Insertion Sort': {name: 'Insertion Sort', run: () => this.insertionSort(this.values), code: this.sortingAlgorithms.insertionSortCode, explanation: this.sortingAlgorithms.insertionSortExplanation},
+      'Quick Sort': {name: 'Quick Sort', run: () => this.quickSort(this.values), code: this.sortingAlgorithms.quickSortCode, explanation: this.sortingAlgorithms.quickSortExplanation},
+      'Merge Sort': {name: 'Merge Sort', run: () => this.mergeSort(this.values), code: this.sortingAlgorithms.mergeSortCode, explanation: this.sortingAlgorithms.mergeSortExplanation},
+      'Heap Sort': {name: 'Heap Sort', run: () => this.heapSort(this.values), code: this.sortingAlgorithms.heapSortCode, explanation: this.sortingAlgorithms.heapSortExplanation},
+      'Selection Sort': {name: 'Selection Sort', run: () => this.selectionSort(this.values), code: this.sortingAlgorithms.selectionSortCode, explanation: this.sortingAlgorithms.selectionSortExplanation},
     };
    }
 
@@ -108,6 +113,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
   toggleCodePanel(){
     this.codePanelOpened = !this.codePanelOpened;
     this.algorithmCode = this.highlightService.highlightCode(this.algorithms[this.selectedAlgorithm].code, 'cpp');
+    this.algorithmExplanation = this.algorithms[this.selectedAlgorithm].explanation;
   }
 
   delay(ms : number)
@@ -168,6 +174,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     this.visualizing = true;
     for(let ind1=0;ind1<array.length;ind1++)
     {
+      let swapped:boolean = false;
       for(let ind2=0; ind2<array.length - ind1 - 1; ind2++){
         var params:BoardColoringParams = new BoardColoringParams();
         params.cmpInd1 = ind2;
@@ -176,11 +183,13 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
         if(! await this.eachStep(array,params))return;
         if( array[ind2] > array[ind2+1])
         {
+          swapped = true;
           array[ind2+1] = [array[ind2],array[ind2] = array[ind2+1]][0];
           params.swapped = true;
           if(! await this.eachStep(array,params))return;
         }
       }
+      if(!swapped)break;
     }
     this.visualizing = false;
   }
@@ -347,7 +356,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       params.cmpInd1 = ind2;
       params.cmpInd2 = ind2+1;
       params.swapped = false;
-      await this.eachStep(array,params);
+      if(! await this.eachStep(array,params))return;
       while(ind2>=0 && array[ind2] > key)
       {
 
@@ -356,18 +365,126 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
         array[ind2] = key;
 
         params.swapped = true;
-        await this.eachStep(array,params);
+        if(! await this.eachStep(array,params))return;
 
         ind2--;
 
         params.cmpInd1 = ind2;
         params.cmpInd2 = ind2+1;
         params.swapped = false;
-        await this.eachStep(array,params);
+        if(! await this.eachStep(array,params))return;
       }
       //array[ind2+1] = key;
     }
     this.visualizing = false;
   }
   //Insertion sort end
+
+  //Selection sort
+async selectionSort(arr:number[]) 
+{ 
+  let params:BoardColoringParams = new BoardColoringParams();
+  params.swapped = false;
+  this.visualizing = true;
+	for (let i = 0; i < arr.length-1; i++) 
+	{ 
+    let min_idx = i; 
+    params.cmpInd1 = i;
+    params.pivotInd = min_idx;
+    for (let j = i+1; j < arr.length; j++) 
+    {
+      if (arr[j] < arr[min_idx]) 
+        min_idx = j; 
+      params.pivotInd = min_idx;
+      params.cmpInd2 = j;
+      if(! await this.eachStep(arr,params))return;
+    }
+    if(arr[i]!=arr[min_idx])
+    {
+      arr[i] = [arr[min_idx], arr[min_idx] = arr[i]][0];
+      params.swapped = true;
+      params.pivotInd = null;
+      params.cmpInd2 = min_idx;
+      if(! await this.eachStep(arr,params))return;
+      params.swapped = false;
+    }
+	} 
+  this.visualizing = false;
+} 
+  //Selection sort end
+
+  //Heap sort
+  async heapify(arr:number[], n:number, i:number) 
+  { 
+    let params:BoardColoringParams = new BoardColoringParams();
+
+    let largest:number = i; // Initialize largest as root 
+    let l:number = 2*i + 1; // left = 2*i + 1 
+    let r:number = 2*i + 2; // right = 2*i + 2 
+  
+    params.pivotInd = largest;
+    params.cmpInd1 = l;
+    params.cmpInd2 = r;
+    if(l < n && r < n)
+      if(! await this.eachStep(arr,params)) return false; 
+    // If left child is larger than root 
+    if (l < n && arr[l] > arr[largest]) 
+      largest = l; 
+    
+    // If right child is larger than largest so far 
+    if (r < n && arr[r] > arr[largest]) 
+      largest = r; 
+  
+    // If largest is not root 
+    if (largest != i) 
+    { 
+      arr[i] = [arr[largest], arr[largest] = arr[i]][0];
+      
+      params.pivotInd = null;
+      params.cmpInd1 = i;
+      params.cmpInd2 = largest;
+      params.swapped = true;
+      if(! await this.eachStep(arr,params)) return false; 
+      params.swapped = false;
+
+      // Recursively heapify the affected sub-tree 
+      if(! await this.heapify(arr, n, largest)) return false; 
+    } 
+    return true;
+  } 
+  
+  // main function to do heap sort 
+  async heapSort(arr:number[]) 
+  { 
+    let n:number = arr.length;
+    let params:BoardColoringParams = new BoardColoringParams();
+    this.visualizing = true;
+    // Build heap (rearrange array) 
+    for (let i = Math.floor(n / 2) - 1; i >= 0; i--) 
+    {
+      if(! await this.heapify(arr, n, i)) return; 
+    }
+
+    // One by one extract an element from heap 
+    for (let i=n-1; i>=0; i--) 
+    { 
+      params.cmpInd1 = 0;
+      params.cmpInd2 = i;
+      if(! await this.eachStep(arr,params))return;
+      // Move current root to end 
+      arr[i] = [arr[0], arr[0] = arr[i]][0];
+      
+      params.cmpInd1 = 0;
+      params.cmpInd2 = i;
+      params.swapped = true;
+      if(! await this.eachStep(arr,params))return;
+      params.swapped = false;
+
+      // call max heapify on the reduced heap 
+      if(! await this.heapify(arr, i, 0)) return; 
+    } 
+    this.visualizing = false;
+  } 
+
+  //Heap sort end
 }

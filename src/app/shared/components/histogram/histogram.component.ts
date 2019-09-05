@@ -88,7 +88,7 @@ export class HistogramComponent implements OnInit, AfterViewInit {
         if(params.swapped)
           this.boardContext.fillStyle = "#990000";
         else if(params.cmpInd1===ind)
-          this.boardContext.fillStyle = "#232442";
+          this.boardContext.fillStyle = "#23216d";
         else if(params.cmpInd2===ind)
           this.boardContext.fillStyle = "#143873";
       }
