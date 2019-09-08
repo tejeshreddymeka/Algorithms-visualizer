@@ -63,16 +63,15 @@ export class HistogramComponent implements OnInit, AfterViewInit {
     let x = this.initX , y = this.initY;
     for(let ind=0;ind<this.values.length; ind++)
     {
-
       this.boardContext.rotate(-Math.PI/2);
       this.boardContext.textAlign = "center";
-      if((params.cmpInd1!==null && params.cmpInd1===ind) || (params.cmpInd2!==null && params.cmpInd2===ind))
+      if((params.ind1!==null && params.ind1===ind) || (params.ind2!==null && params.ind2===ind))
       {
         if(params.swapped)
           this.boardContext.fillStyle = "#990000";
-        else if(params.cmpInd1===ind)
+        else if(params.ind1===ind)
           this.boardContext.fillStyle = "#232442";
-        else if(params.cmpInd2===ind)
+        else if(params.ind2===ind)
           this.boardContext.fillStyle = "#1b4a96";
         this.boardContext.font = "bold 10pt Courier";
       }
@@ -83,19 +82,19 @@ export class HistogramComponent implements OnInit, AfterViewInit {
       }
       this.boardContext.fillText(this.values[ind].toString(),-15,x+8);
       this.boardContext.rotate(Math.PI/2);
-      if((params.cmpInd1!==null && params.cmpInd1===ind) || (params.cmpInd2!==null && params.cmpInd2===ind))
+      if((params.ind1!==null && params.ind1===ind) || (params.ind2!==null && params.ind2===ind))
       {
         if(params.swapped)
           this.boardContext.fillStyle = "#990000";
-        else if(params.cmpInd1===ind)
+        else if(params.ind1===ind)
           this.boardContext.fillStyle = "#23216d";
-        else if(params.cmpInd2===ind)
+        else if(params.ind2===ind)
           this.boardContext.fillStyle = "#143873";
       }
       else
         this.boardContext.fillStyle = "grey";
       var barHeight = this.values[ind]*this.barUnitLength;
-      if(params.pivotInd!==null && params.pivotInd === ind)
+      if(params.ind3!==null && params.ind3 === ind)
         this.boardContext.fillStyle = "black";
       this.boardContext.fillRect(x,y,this.barWidth, barHeight);
       

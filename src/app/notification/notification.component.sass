@@ -1,0 +1,41 @@
+.notifications-wrapper
+    .notification
+        position: fixed
+        top: 100px
+        right: -376px
+        width: 400px
+        height: 100px
+        padding: 10px
+        color: white
+        border-left: 20px solid #1a1358f0 
+        background-color: rgba(0,0,0,0.9)
+        border-radius: 6px
+        box-shadow: 0px 0px 10px grey
+        animation: notificationAnimation 3s ease 
+        @keyframes notificationAnimation
+            0%
+                right: -400px 
+            20%
+                right: 10px 
+            80%
+                right: 10px
+            90%
+                right: 30px
+            100%
+                right: -380px 
+
+        &:hover
+            right: 0px
+        .close-button
+            font-size: 16px
+            float: right
+            background-color: rgba(0,0,0,0.7)
+            color: white
+            border: 1px solid white
+            border-radius: 6px
+            padding: 8px 10px
+            &:hover
+                background-color: white
+                color: black
+                font-weight: bold
+    

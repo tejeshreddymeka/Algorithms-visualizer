@@ -1,8 +1,8 @@
 export class BoardColoringParams{
-    cmpInd1: number = null;
-    cmpInd2: number = null;
+    ind1: number = null;    // cmp INd
+    ind2: number = null;   // cmp Ind
+    ind3: number = null;  // pivot Ind
     swapped: boolean = false;
-    pivotInd: number = null;
     leftBoundary: number = null;
     rightBoundary: number = null;
     leftBoundary2: number = null;

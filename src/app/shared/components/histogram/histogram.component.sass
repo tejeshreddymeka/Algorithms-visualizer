@@ -29,37 +29,50 @@
     background-color: white 
 .values-wrapper
     width: 100%
-    margin-top: 20px
+    margin: 0px
+    padding-top: 20px
+    background-color: #0d0d26
+    float: left // needed inorder to avoid its height shrinking to zero . Don't remove it.
     .value
-        display: inline-block
         float: left
+        width: auto
         padding: 14px
-        border: 2px solid white
         color: black 
         background-color: white
         font-size: 12px
         border-radius: 4px
         margin: 4px 2px 22px 2px
+        &:last-child
+            float: clear
     .swapped
         background-color: #0d0d26
         color: white 
         font-weight: bold
         border-radius: 4px
+        padding: 12px 12px
         border: 2px solid #ed594e
     .compared
         font-weight: bold
         color: white 
         border-radius: 4px
+        padding: 12px 12px
+        border: 2px solid white
     .compared1
         background-color: #0d0d26
+        padding: 12px 12px
+        border: 2px solid white
     .compared2
         background-color: #143873
+        padding: 12px 12px
+        border: 2px solid white
 
     .pivot
         background-color: black
         font-weight: bold
         color: white 
         border-radius: 4px
+        padding: 12px 12px
+        border: 2px solid white
 
     .leftBoundary
         @include triangle(before,6px,12px,green, -1, -1, -20px, -4px, "up")

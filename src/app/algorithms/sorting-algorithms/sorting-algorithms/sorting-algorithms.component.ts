@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { HistogramComponent } from '../shared/components/histogram/histogram.component';
-import { BoardColoringParams } from '../models/board-coloring-params';
-import { SortingAlgorithms } from '../algorithms/sorting-algorithms/code';
-import { HighlightService } from '../services/highlight.service';
+import { HistogramComponent } from '../../../shared/components/histogram/histogram.component';
+import { BoardColoringParams } from '../../../models/board-coloring-params';
+import { SortingAlgorithms } from './sorting-algorithms-code';
+import { HighlightService } from '../../../services/highlight.service';
+import { Util } from '../../../shared/util';
 
 @Component({
   selector: 'app-sorting-algorithms',
@@ -116,11 +117,6 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     this.algorithmExplanation = this.algorithms[this.selectedAlgorithm].explanation;
   }
 
-  delay(ms : number)
-  {
-    return new Promise(resolve => setTimeout(resolve, ms)); 
-  }
-
   randomize(){
     this.customPanelOpened = false;
     this.values = [];
@@ -156,7 +152,7 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     if(!this.visualizing)return false;
     this.values = array;
     this.histogram.drawBoard(params);
-    await this.delay(this.maxSpeed - this.speed);
+    await Util.delay(this.maxSpeed - this.speed);
     return true;
   }
 
@@ -177,8 +173,8 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       let swapped:boolean = false;
       for(let ind2=0; ind2<array.length - ind1 - 1; ind2++){
         var params:BoardColoringParams = new BoardColoringParams();
-        params.cmpInd1 = ind2;
-        params.cmpInd2 = ind2+1;
+        params.ind1 = ind2;
+        params.ind2 = ind2+1;
         params.swapped = false;
         if(! await this.eachStep(array,params))return;
         if( array[ind2] > array[ind2+1])
@@ -220,14 +216,14 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     var pivot   = items[right], 
         i       = left-1, 
         j       = left, 
-        pivotInd = right;
+        ind3 = right;
 
     var params:BoardColoringParams = new BoardColoringParams();
-    params.pivotInd = pivotInd;
+    params.ind3 = ind3;
     params.leftBoundary = left;params.rightBoundary = right;
     for (j = left; j <= right - 1; j++)
     {
-      params.cmpInd1 = i+1;params.cmpInd2 = j;params.swapped = false;
+      params.ind1 = i+1;params.ind2 = j;params.swapped = false;
       if(! await this.eachStep(items,params))return;
       if (items[j] < pivot)
       {
@@ -235,17 +231,17 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
         items[i] = [items[j], items[j] = items[i]][0];
         if(i!==j)
         {
-          params.cmpInd1 = i;params.cmpInd2 = j;params.swapped = true;
+          params.ind1 = i;params.ind2 = j;params.swapped = true;
           if(! await this.eachStep(items,params))return;
         }
       }
     }
 
-    items[i+1] = [items[pivotInd], items[pivotInd] = items[i+1]][0];
+    items[i+1] = [items[ind3], items[ind3] = items[i+1]][0];
 
-    params.cmpInd1 = i+1; params.cmpInd2 = pivotInd; params.swapped = false;
+    params.ind1 = i+1; params.ind2 = ind3; params.swapped = false;
     if(! await this.eachStep(items,params))return;
-    if(i+1 !== pivotInd)
+    if(i+1 !== ind3)
     {
       params.swapped = true;
       if(! await this.eachStep(items,params))return;
@@ -308,21 +304,21 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     k = l; // Initial index of merged subarray 
     while (i < n1 && j < n2) 
     { 
-      params.cmpInd1 = l+i;
-      params.cmpInd2 = m+1+j;
-      params.pivotInd = k;
+      params.ind1 = l+i;
+      params.ind2 = m+1+j;
+      params.ind3 = k;
       if(! await this.eachStep(arr,params))return;
       if (L[i] <= R[j]) 
       { 
         arr[k] = L[i]; i++; 
         if(! await this.eachStep(arr,params))return;
-        params.cmpInd1 = l+i;
+        params.ind1 = l+i;
       } 
       else
       { 
         arr[k] = R[j]; j++; 
         if(! await this.eachStep(arr,params))return;
-        params.cmpInd2 = m+1+j;
+        params.ind2 = m+1+j;
       } 
       k++; 
     } 
@@ -330,13 +326,13 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
     { 
       arr[k] = L[i]; i++; k++; 
       if(! await this.eachStep(arr,params))return;
-      params.cmpInd1 = l+i;
+      params.ind1 = l+i;
     } 
     while (j < n2) 
     { 
       arr[k] = R[j]; j++; k++; 
       if(! await this.eachStep(arr,params))return;
-      params.cmpInd2 = m+1+j;
+      params.ind2 = m+1+j;
     } 
     return arr;
   } 
@@ -353,8 +349,8 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
       if(!this.visualizing)return;
       key = array[ind1];
       let ind2 = ind1 - 1;
-      params.cmpInd1 = ind2;
-      params.cmpInd2 = ind2+1;
+      params.ind1 = ind2;
+      params.ind2 = ind2+1;
       params.swapped = false;
       if(! await this.eachStep(array,params))return;
       while(ind2>=0 && array[ind2] > key)
@@ -369,8 +365,8 @@ export class SortingAlgorithmsComponent implements OnInit, AfterViewInit {
 
         ind2--;
 
-        params.cmpInd1 = ind2;
-        params.cmpInd2 = ind2+1;
+        params.ind1 = ind2;
+        params.ind2 = ind2+1;
         params.swapped = false;
         if(! await this.eachStep(array,params))return;
       }
@@ -389,22 +385,22 @@ async selectionSort(arr:number[])
 	for (let i = 0; i < arr.length-1; i++) 
 	{ 
     let min_idx = i; 
-    params.cmpInd1 = i;
-    params.pivotInd = min_idx;
+    params.ind1 = i;
+    params.ind3 = min_idx;
     for (let j = i+1; j < arr.length; j++) 
     {
       if (arr[j] < arr[min_idx]) 
         min_idx = j; 
-      params.pivotInd = min_idx;
-      params.cmpInd2 = j;
+      params.ind3 = min_idx;
+      params.ind2 = j;
       if(! await this.eachStep(arr,params))return;
     }
     if(arr[i]!=arr[min_idx])
     {
       arr[i] = [arr[min_idx], arr[min_idx] = arr[i]][0];
       params.swapped = true;
-      params.pivotInd = null;
-      params.cmpInd2 = min_idx;
+      params.ind3 = null;
+      params.ind2 = min_idx;
       if(! await this.eachStep(arr,params))return;
       params.swapped = false;
     }
@@ -422,9 +418,9 @@ async selectionSort(arr:number[])
     let l:number = 2*i + 1; // left = 2*i + 1 
     let r:number = 2*i + 2; // right = 2*i + 2 
   
-    params.pivotInd = largest;
-    params.cmpInd1 = l;
-    params.cmpInd2 = r;
+    params.ind3 = largest;
+    params.ind1 = l;
+    params.ind2 = r;
     if(l < n && r < n)
       if(! await this.eachStep(arr,params)) return false; 
     // If left child is larger than root 
@@ -440,9 +436,9 @@ async selectionSort(arr:number[])
     { 
       arr[i] = [arr[largest], arr[largest] = arr[i]][0];
       
-      params.pivotInd = null;
-      params.cmpInd1 = i;
-      params.cmpInd2 = largest;
+      params.ind3 = null;
+      params.ind1 = i;
+      params.ind2 = largest;
       params.swapped = true;
       if(! await this.eachStep(arr,params)) return false; 
       params.swapped = false;
@@ -468,14 +464,14 @@ async selectionSort(arr:number[])
     // One by one extract an element from heap 
     for (let i=n-1; i>=0; i--) 
     { 
-      params.cmpInd1 = 0;
-      params.cmpInd2 = i;
+      params.ind1 = 0;
+      params.ind2 = i;
       if(! await this.eachStep(arr,params))return;
       // Move current root to end 
       arr[i] = [arr[0], arr[0] = arr[i]][0];
       
-      params.cmpInd1 = 0;
-      params.cmpInd2 = i;
+      params.ind1 = 0;
+      params.ind2 = i;
       params.swapped = true;
       if(! await this.eachStep(arr,params))return;
       params.swapped = false;

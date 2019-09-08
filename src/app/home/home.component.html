@@ -1,7 +1,10 @@
 <div class="home-container">
   <div class="header">
     <div class="text glow">
-      Algorithms Visualizer
+      <span class="rotate-text">Algorithms Visualizer</span>
+    </div>
+    <div #headerCanvasWrapper class="header-canvas-wrapper">
+      <canvas #headerCanvas id="headerCanvas"></canvas>
     </div>
   </div>
   <div class="section">
@@ -11,9 +14,9 @@
           <span>Sorting Algorithms</span>
         </div>
       </div>
-      <div class="card-wrapper col-md-4 col-sm-6" [routerLink]="['']">
+      <div class="card-wrapper col-md-4 col-sm-6" [routerLink]="['graph-algorithms']">
         <div class="card">
-          <span>Path Finding Algorithms</span>
+          <span>Graph Algorithms</span>
         </div>
       </div>
       <div class="card-wrapper col-md-4 col-sm-6" [routerLink]="['']">

@@ -1,0 +1,10 @@
+<div class="notifications-wrapper">
+    <div *ngFor="let message of notificationService.messages" class="notification">
+        {{message}}
+        <button 
+            (click)="closeTopNotification()" 
+            class="close-button">
+            X
+        </button>
+    </div>
+</div>
