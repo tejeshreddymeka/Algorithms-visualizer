@@ -187,7 +187,6 @@ export class GraphAlgorithmsComponent implements OnInit, AfterViewInit {
             }
           }
           node.edges.push(edge);
-          console.log(node.value + ' => ' + node.edges);
         }
       });
     });

@@ -127,8 +127,13 @@
               "devServerTarget": "Algorithms-visualizer:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
-    }},
+    }
+  },
   "defaultProject": "Algorithms-visualizer"
 }

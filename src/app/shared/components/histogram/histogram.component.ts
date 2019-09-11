@@ -18,7 +18,7 @@ export class HistogramComponent implements OnInit, AfterViewInit {
   boardContext: CanvasRenderingContext2D;
   private board: HTMLCanvasElement;
 
-  private boardColoringParams: BoardColoringParams = new BoardColoringParams();
+  boardColoringParams: BoardColoringParams = new BoardColoringParams();
 
   private initX: number;
   private initY: number;
