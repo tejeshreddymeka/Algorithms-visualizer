@@ -15,7 +15,7 @@ export class NotificationComponent implements OnInit {
   ngOnInit() {
   }
 
-  closeTopNotification(){
+  closeTopNotification() {
     this.notificationService.popMessage();
   }
 

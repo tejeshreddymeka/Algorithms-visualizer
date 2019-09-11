@@ -1,6 +1,6 @@
-export class SortingAlgorithms{
+export class SortingAlgorithms {
 
-  bubbleSortExplanation: string = `
+  bubbleSortExplanation = `
 Bubble Sort is the simplest sorting algorithm that works by repeatedly swapping the adjacent elements if they are in wrong order.
 
 Example:
@@ -36,70 +36,70 @@ Stable: Yes
 Due to its simplicity, bubble sort is often used to introduce the concept of a sorting algorithm.
 In computer graphics it is popular for its capability to detect a very small error (like swap of just two elements) in almost-sorted arrays and fix it with just linear complexity (2n). For example, it is used in a polygon filling algorithm, where bounding lines are sorted by their x coordinate at a specific scan line (a line parallel to x axis) and with incrementing y their order changes (two elements are swapped) only at intersections of two lines
   `;
-  bubbleSortCode: string = `
-  // C++ program for implementation of Bubble sort 
-  #include <bits/stdc++.h> 
-  using namespace std; 
-  
-  void swap(int *xp, int *yp) 
-  { 
-    int temp = *xp; 
-    *xp = *yp; 
-    *yp = temp; 
-  } 
-  
-  // An optimized version of Bubble Sort 
-  void bubbleSort(int arr[], int n) 
-  { 
-     int i, j; 
-     bool swapped; 
-     for (i = 0; i < n-1; i++) 
-     { 
-       swapped = false; 
-       for (j = 0; j < n-i-1; j++) 
-       { 
-          if (arr[j] > arr[j+1]) 
-          { 
-             swap(&arr[j], &arr[j+1]); 
-             swapped = true; 
-          } 
-       } 
-    
-       // If no two elements were swapped by inner loop, then break 
-       if (swapped == false) 
-          break; 
-     } 
-  } 
-  
+  bubbleSortCode = `
+  // C++ program for implementation of Bubble sort
+  #include <bits/stdc++.h>
+  using namespace std;
+
+  void swap(int *xp, int *yp)
+  {
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+  }
+
+  // An optimized version of Bubble Sort
+  void bubbleSort(int arr[], int n)
+  {
+     int i, j;
+     bool swapped;
+     for (i = 0; i < n-1; i++)
+     {
+       swapped = false;
+       for (j = 0; j < n-i-1; j++)
+       {
+          if (arr[j] > arr[j+1])
+          {
+             swap(&arr[j], &arr[j+1]);
+             swapped = true;
+          }
+       }
+
+       // If no two elements were swapped by inner loop, then break
+       if (swapped == false)
+          break;
+     }
+  }
+
   /* Function to print an array */
-  void printArray(int arr[], int size) 
-  { 
-    int i; 
-    for (i = 0; i < size; i++) 
-      cout << arr[i] << " "; 
-    cout << endl; 
-  } 
-  
-  // Driver code 
-  int main() 
-  { 
-    int arr[] = {64, 34, 25, 12, 22, 11, 90}; 
-    int n = sizeof(arr)/sizeof(arr[0]); 
-    bubbleSort(arr, n); 
-    cout<<"Sorted array: \\n"; 
-    printArray(arr, n); 
-    return 0; 
-  } 
+  void printArray(int arr[], int size)
+  {
+    int i;
+    for (i = 0; i < size; i++)
+      cout << arr[i] << " ";
+    cout << endl;
+  }
+
+  // Driver code
+  int main()
+  {
+    int arr[] = {64, 34, 25, 12, 22, 11, 90};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    bubbleSort(arr, n);
+    cout<<"Sorted array: \\n";
+    printArray(arr, n);
+    return 0;
+  }
   `;
 
-  insertionSortExplanation:string = `
+  insertionSortExplanation = `
 Insertion sort is a simple sorting algorithm that works the way we sort playing cards in our hands.
 
 Algorithm
 // Sort an arr[] of size n
 insertionSort(arr, n)
 Loop from i = 1 to n-1.
-  a) Pick element arr[i] and insert it into sorted sequence arr[0…i-1] 
+  a) Pick element arr[i] and insert it into sorted sequence arr[0…i-1]
 
 Example:
 12, 11, 13, 5, 6
@@ -143,63 +143,63 @@ How to implement Insertion Sort for Linked List?
   1) Create an empty sorted (or result) list
   2) Traverse the given list, do following for every node.
     a) Insert current node in sorted way in sorted or result list.
-  3) Change head of given linked list to head of sorted (or result) list. 
+  3) Change head of given linked list to head of sorted (or result) list.
   `;
-  insertionSortCode:string = `
-  // C++ program for insertion sort 
-  #include <bits/stdc++.h> 
-  using namespace std; 
-  
+  insertionSortCode = `
+  // C++ program for insertion sort
+  #include <bits/stdc++.h>
+  using namespace std;
+
   /* Function to sort an array using insertion sort*/
-  void insertionSort(int arr[], int n) 
-  { 
-    int i, key, j; 
-    for (i = 1; i < n; i++) 
-    { 
-      key = arr[i]; 
-      j = i - 1; 
-  
-      /* Move elements of arr[0..i-1], that are 
-      greater than key, to one position ahead 
+  void insertionSort(int arr[], int n)
+  {
+    int i, key, j;
+    for (i = 1; i < n; i++)
+    {
+      key = arr[i];
+      j = i - 1;
+
+      /* Move elements of arr[0..i-1], that are
+      greater than key, to one position ahead
       of their current position */
-      while (j >= 0 && arr[j] > key) 
-      { 
-        arr[j + 1] = arr[j]; 
-        j = j - 1; 
-      } 
-      arr[j + 1] = key; 
-    } 
-  } 
-  
-  // A utility function to print an array of size n 
-  void printArray(int arr[], int n) 
-  { 
-    int i; 
-    for (i = 0; i < n; i++) 
-      cout << arr[i] << " "; 
-    cout << endl; 
-  } 
-  
+      while (j >= 0 && arr[j] > key)
+      {
+        arr[j + 1] = arr[j];
+        j = j - 1;
+      }
+      arr[j + 1] = key;
+    }
+  }
+
+  // A utility function to print an array of size n
+  void printArray(int arr[], int n)
+  {
+    int i;
+    for (i = 0; i < n; i++)
+      cout << arr[i] << " ";
+    cout << endl;
+  }
+
   /* Driver code */
-  int main() 
-  { 
-    int arr[] = { 12, 11, 13, 5, 6 }; 
-    int n = sizeof(arr) / sizeof(arr[0]); 
-  
-    insertionSort(arr, n); 
-    printArray(arr, n); 
-  
-    return 0; 
-  } 
+  int main()
+  {
+    int arr[] = { 12, 11, 13, 5, 6 };
+    int n = sizeof(arr) / sizeof(arr[0]);
+
+    insertionSort(arr, n);
+    printArray(arr, n);
+
+    return 0;
+  }
   `;
-  
-  quickSortExplanation: string = `
+
+  quickSortExplanation = `
 Like Merge Sort, QuickSort is a Divide and Conquer algorithm. It picks an element as pivot and partitions the given array around the picked pivot. There are many different versions of quickSort that pick pivot in different ways. 1. Always pick first element as pivot.
 2. Always pick last element as pivot (implemented below)
 3. Pick a random element as pivot.
 4. Pick median as pivot.
 
-The key process in quickSort is partition(). 
+The key process in quickSort is partition().
 Target of partitions is, given an array and an element x of array as pivot, put x at its correct position in sorted array and put all smaller elements (smaller than x) before x, and put all greater elements (greater than x) after x. All this should be done in linear time.
 
 Analysis of QuickSort
@@ -214,7 +214,7 @@ Worst Case: The worst case occurs when the partition process always picks greate
 Following is recurrence for worst case.
 
 T(n) = T(0) + T(n-1) + theta(n)
-which is equivalent to  
+which is equivalent to
 T(n) = T(n-1) + theta(n)
 The solution of above recurrence is theta(n^2).
 
@@ -269,85 +269,85 @@ Why MergeSort is preferred over QuickSort for Linked Lists?
 How to optimize QuickSort so that it takes O(Log n) extra space in worst case?
   Please see <a href="https://www.geeksforgeeks.org/quicksort-tail-call-optimization-reducing-worst-case-space-log-n/" target="_blank">QuickSort Tail Call Optimization</a> (Reducing worst case space to Log n )
   `;
-  quickSortCode: string = `
+  quickSortCode = `
   /* C++ implementation of QuickSort */
-  #include <bits/stdc++.h> 
-  using namespace std; 
-  
-  // A utility function to swap two elements 
-  void swap(int* a, int* b) 
-  { 
-    int t = *a; 
-    *a = *b; 
-    *b = t; 
-  } 
-  
-  /* This function takes last element as pivot, places 
-  the pivot element at its correct position in sorted 
-  array, and places all smaller (smaller than pivot) 
-  to left of pivot and all greater elements to right 
+  #include <bits/stdc++.h>
+  using namespace std;
+
+  // A utility function to swap two elements
+  void swap(int* a, int* b)
+  {
+    int t = *a;
+    *a = *b;
+    *b = t;
+  }
+
+  /* This function takes last element as pivot, places
+  the pivot element at its correct position in sorted
+  array, and places all smaller (smaller than pivot)
+  to left of pivot and all greater elements to right
   of pivot */
-  int partition (int arr[], int low, int high) 
-  { 
-    int pivot = arr[high]; // pivot 
-    int i = (low - 1); // Index of smaller element 
-  
-    for (int j = low; j <= high - 1; j++) 
-    { 
-      // If current element is smaller than the pivot 
-      if (arr[j] < pivot) 
-      { 
-        i++; // increment index of smaller element 
-        swap(&arr[i], &arr[j]); 
-      } 
-    } 
-    swap(&arr[i + 1], &arr[high]); 
-    return (i + 1); 
-  } 
-  
-  /* The main function that implements QuickSort 
-  arr[] --> Array to be sorted, 
-  low --> Starting index, 
+  int partition (int arr[], int low, int high)
+  {
+    int pivot = arr[high]; // pivot
+    int i = (low - 1); // Index of smaller element
+
+    for (int j = low; j <= high - 1; j++)
+    {
+      // If current element is smaller than the pivot
+      if (arr[j] < pivot)
+      {
+        i++; // increment index of smaller element
+        swap(&arr[i], &arr[j]);
+      }
+    }
+    swap(&arr[i + 1], &arr[high]);
+    return (i + 1);
+  }
+
+  /* The main function that implements QuickSort
+  arr[] --> Array to be sorted,
+  low --> Starting index,
   high --> Ending index */
-  void quickSort(int arr[], int low, int high) 
-  { 
-    if (low < high) 
-    { 
-      /* pi is partitioning index, arr[p] is now 
+  void quickSort(int arr[], int low, int high)
+  {
+    if (low < high)
+    {
+      /* pi is partitioning index, arr[p] is now
       at right place */
-      int pi = partition(arr, low, high); 
-  
-      // Separately sort elements before 
-      // partition and after partition 
-      quickSort(arr, low, pi - 1); 
-      quickSort(arr, pi + 1, high); 
-    } 
-  } 
-  
+      int pi = partition(arr, low, high);
+
+      // Separately sort elements before
+      // partition and after partition
+      quickSort(arr, low, pi - 1);
+      quickSort(arr, pi + 1, high);
+    }
+  }
+
   /* Function to print an array */
-  void printArray(int arr[], int size) 
-  { 
-    int i; 
-    for (i = 0; i < size; i++) 
-      cout << arr[i] << " "; 
-    cout << endl; 
-  } 
-  
-  // Driver Code 
-  int main() 
-  { 
-    int arr[] = {10, 7, 8, 9, 1, 5}; 
-    int n = sizeof(arr) / sizeof(arr[0]); 
-    quickSort(arr, 0, n - 1); 
-    cout << "Sorted array: \\n"; 
-    printArray(arr, n); 
-    return 0; 
-  } 
+  void printArray(int arr[], int size)
+  {
+    int i;
+    for (i = 0; i < size; i++)
+      cout << arr[i] << " ";
+    cout << endl;
+  }
+
+  // Driver Code
+  int main()
+  {
+    int arr[] = {10, 7, 8, 9, 1, 5};
+    int n = sizeof(arr) / sizeof(arr[0]);
+    quickSort(arr, 0, n - 1);
+    cout << "Sorted array: \\n";
+    printArray(arr, n);
+    return 0;
+  }
   `;
 
-  mergeSortExplanation: string = `
-Like QuickSort, Merge Sort is a Divide and Conquer algorithm. 
-It divides input array in two halves, calls itself for the two halves and then merges the two sorted halves. 
+  mergeSortExplanation = `
+Like QuickSort, Merge Sort is a Divide and Conquer algorithm.
+It divides input array in two halves, calls itself for the two halves and then merges the two sorted halves.
 The merge() function is used for merging two halves. The merge(arr, l, m, r) is key process that assumes that arr[l..m] and arr[m+1..r] are sorted and merges the two sorted sub-arrays into one.
 
 Time Complexity: Sorting arrays on different machines. Merge Sort is a recursive algorithm and time complexity can be expressed as following recurrence relation.
@@ -372,113 +372,113 @@ In arrays, we can do random access as elements are contiguous in memory. Let us 
 
   3. <a href="https://en.wikipedia.org/wiki/External_sorting" target="_blank">Used in External Sorting</a>
   `;
-  mergeSortCode: string = `
-  #include<stdlib.h> 
-  #include<stdio.h> 
-  
-  // Merges two subarrays of arr[]. 
-  // First subarray is arr[l..m] 
-  // Second subarray is arr[m+1..r] 
-  void merge(int arr[], int l, int m, int r) 
-  { 
-    int i, j, k; 
-    int n1 = m - l + 1; 
-    int n2 = r - m; 
-  
+  mergeSortCode = `
+  #include<stdlib.h>
+  #include<stdio.h>
+
+  // Merges two subarrays of arr[].
+  // First subarray is arr[l..m]
+  // Second subarray is arr[m+1..r]
+  void merge(int arr[], int l, int m, int r)
+  {
+    int i, j, k;
+    int n1 = m - l + 1;
+    int n2 = r - m;
+
     /* create temp arrays */
-    int L[n1], R[n2]; 
-  
+    int L[n1], R[n2];
+
     /* Copy data to temp arrays L[] and R[] */
-    for (i = 0; i < n1; i++) 
-      L[i] = arr[l + i]; 
-    for (j = 0; j < n2; j++) 
-      R[j] = arr[m + 1+ j]; 
-  
+    for (i = 0; i < n1; i++)
+      L[i] = arr[l + i];
+    for (j = 0; j < n2; j++)
+      R[j] = arr[m + 1+ j];
+
     /* Merge the temp arrays back into arr[l..r]*/
-    i = 0; // Initial index of first subarray 
-    j = 0; // Initial index of second subarray 
-    k = l; // Initial index of merged subarray 
-    while (i < n1 && j < n2) 
-    { 
-      if (L[i] <= R[j]) 
-      { 
-        arr[k] = L[i]; 
-        i++; 
-      } 
+    i = 0; // Initial index of first subarray
+    j = 0; // Initial index of second subarray
+    k = l; // Initial index of merged subarray
+    while (i < n1 && j < n2)
+    {
+      if (L[i] <= R[j])
+      {
+        arr[k] = L[i];
+        i++;
+      }
       else
-      { 
-        arr[k] = R[j]; 
-        j++; 
-      } 
-      k++; 
-    } 
-  
-    /* Copy the remaining elements of L[], if there 
+      {
+        arr[k] = R[j];
+        j++;
+      }
+      k++;
+    }
+
+    /* Copy the remaining elements of L[], if there
     are any */
-    while (i < n1) 
-    { 
-      arr[k] = L[i]; 
-      i++; 
-      k++; 
-    } 
-  
-    /* Copy the remaining elements of R[], if there 
+    while (i < n1)
+    {
+      arr[k] = L[i];
+      i++;
+      k++;
+    }
+
+    /* Copy the remaining elements of R[], if there
     are any */
-    while (j < n2) 
-    { 
-      arr[k] = R[j]; 
-      j++; 
-      k++; 
-    } 
-  } 
-  
-  /* l is for left index and r is right index of the 
+    while (j < n2)
+    {
+      arr[k] = R[j];
+      j++;
+      k++;
+    }
+  }
+
+  /* l is for left index and r is right index of the
   sub-array of arr to be sorted */
-  void mergeSort(int arr[], int l, int r) 
-  { 
-    if (l < r) 
-    { 
-      // Same as (l+r)/2, but avoids overflow for 
-      // large l and h 
-      int m = l+(r-l)/2; 
-  
-      // Sort first and second halves 
-      mergeSort(arr, l, m); 
-      mergeSort(arr, m+1, r); 
-  
-      merge(arr, l, m, r); 
-    } 
-  } 
-  
+  void mergeSort(int arr[], int l, int r)
+  {
+    if (l < r)
+    {
+      // Same as (l+r)/2, but avoids overflow for
+      // large l and h
+      int m = l+(r-l)/2;
+
+      // Sort first and second halves
+      mergeSort(arr, l, m);
+      mergeSort(arr, m+1, r);
+
+      merge(arr, l, m, r);
+    }
+  }
+
   /* UTILITY FUNCTIONS */
   /* Function to print an array */
-  void printArray(int A[], int size) 
-  { 
-    int i; 
-    for (i=0; i < size; i++) 
-      printf("%d ", A[i]); 
-    printf("\\n"); 
-  } 
-  
+  void printArray(int A[], int size)
+  {
+    int i;
+    for (i=0; i < size; i++)
+      printf("%d ", A[i]);
+    printf("\\n");
+  }
+
   /* Driver program to test above functions */
-  int main() 
-  { 
-    int arr[] = {12, 11, 13, 5, 6, 7}; 
-    int arr_size = sizeof(arr)/sizeof(arr[0]); 
-  
-    printf("Given array is \\n"); 
-    printArray(arr, arr_size); 
-  
-    mergeSort(arr, 0, arr_size - 1); 
-  
-    printf("\\nSorted array is \\n"); 
-    printArray(arr, arr_size); 
-    return 0; 
-  } 
+  int main()
+  {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int arr_size = sizeof(arr)/sizeof(arr[0]);
+
+    printf("Given array is \\n");
+    printArray(arr, arr_size);
+
+    mergeSort(arr, 0, arr_size - 1);
+
+    printf("\\nSorted array is \\n");
+    printArray(arr, arr_size);
+    return 0;
+  }
   `;
 
-  selectionSortExplanation: string = `
-The selection sort algorithm sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning. 
+  selectionSortExplanation = `
+The selection sort algorithm sorts an array by repeatedly finding the minimum element (considering ascending order) from unsorted part and putting it at the beginning.
 The algorithm maintains two subarrays in a given array.
   1) The subarray which is already sorted.
   2) Remaining subarray which is unsorted.
@@ -499,66 +499,66 @@ Find the minimum element in arr[2...4] and place it at beginning of arr[2...4]
 11 12 22 25 64
 
 Find the minimum element in arr[3...4] and place it at beginning of arr[3...4]
-11 12 22 25 64 
+11 12 22 25 64
 
 Time Complexity: O(n^2) as there are two nested loops.
 
 Auxiliary Space: O(1)
 The good thing about selection sort is it never makes more than O(n) swaps and can be useful when memory write is a costly operation.
   `;
-  selectionSortCode: string = `
-  // C++ program for implementation of selection sort 
-  #include <bits/stdc++.h> 
-  using namespace std; 
-  
-  void swap(int *xp, int *yp) 
-  { 
-    int temp = *xp; 
-    *xp = *yp; 
-    *yp = temp; 
-  } 
-  
-  void selectionSort(int arr[], int n) 
-  { 
-    int i, j, min_idx; 
-  
-    // One by one move boundary of unsorted subarray 
-    for (i = 0; i < n-1; i++) 
-    { 
-      // Find the minimum element in unsorted array 
-      min_idx = i; 
-      for (j = i+1; j < n; j++) 
-      if (arr[j] < arr[min_idx]) 
-        min_idx = j; 
-  
-      // Swap the found minimum element with the first element 
-      swap(&arr[min_idx], &arr[i]); 
-    } 
-  } 
-  
+  selectionSortCode = `
+  // C++ program for implementation of selection sort
+  #include <bits/stdc++.h>
+  using namespace std;
+
+  void swap(int *xp, int *yp)
+  {
+    int temp = *xp;
+    *xp = *yp;
+    *yp = temp;
+  }
+
+  void selectionSort(int arr[], int n)
+  {
+    int i, j, min_idx;
+
+    // One by one move boundary of unsorted subarray
+    for (i = 0; i < n-1; i++)
+    {
+      // Find the minimum element in unsorted array
+      min_idx = i;
+      for (j = i+1; j < n; j++)
+      if (arr[j] < arr[min_idx])
+        min_idx = j;
+
+      // Swap the found minimum element with the first element
+      swap(&arr[min_idx], &arr[i]);
+    }
+  }
+
   /* Function to print an array */
-  void printArray(int arr[], int size) 
-  { 
-    int i; 
-    for (i=0; i < size; i++) 
-      cout << arr[i] << " "; 
-    cout << endl; 
-  } 
-  
-  // Driver program to test above functions 
-  int main() 
-  { 
-    int arr[] = {64, 25, 12, 22, 11}; 
-    int n = sizeof(arr)/sizeof(arr[0]); 
-    selectionSort(arr, n); 
-    cout << "Sorted array: \\n"; 
-    printArray(arr, n); 
-    return 0; 
-  } 
+  void printArray(int arr[], int size)
+  {
+    int i;
+    for (i=0; i < size; i++)
+      cout << arr[i] << " ";
+    cout << endl;
+  }
+
+  // Driver program to test above functions
+  int main()
+  {
+    int arr[] = {64, 25, 12, 22, 11};
+    int n = sizeof(arr)/sizeof(arr[0]);
+    selectionSort(arr, n);
+    cout << "Sorted array: \\n";
+    printArray(arr, n);
+    return 0;
+  }
   `;
 
-  heapSortExplanation: string = `
-Heap sort is a comparison based sorting technique based on Binary Heap data structure. 
+  heapSortExplanation = `
+Heap sort is a comparison based sorting technique based on Binary Heap data structure.
 It is similar to selection sort where we first find the maximum element and place the maximum element at the end. We repeat the same process for remaining element.
 
 Complete Binary Tree:
@@ -616,75 +616,75 @@ Applications of HeapSort
 
 Heap sort algorithm has limited uses because Quicksort and Mergesort are better in practice. Nevertheless, the Heap data structure itself is enormously used. See <a target="_blank" href="https://www.geeksforgeeks.org/applications-of-heap-data-structure/"> Applications of Heap Data Structure <a>
   `;
-  heapSortCode: string = `
-  // C++ program for implementation of Heap Sort 
-  #include <iostream> 
-  
-  using namespace std; 
-  
-  // To heapify a subtree rooted with node i which is 
-  // an index in arr[]. n is size of heap 
-  void heapify(int arr[], int n, int i) 
-  { 
-    int largest = i; // Initialize largest as root 
-    int l = 2*i + 1; // left = 2*i + 1 
-    int r = 2*i + 2; // right = 2*i + 2 
-  
-    // If left child is larger than root 
-    if (l < n && arr[l] > arr[largest]) 
-      largest = l; 
-  
-    // If right child is larger than largest so far 
-    if (r < n && arr[r] > arr[largest]) 
-      largest = r; 
-  
-    // If largest is not root 
-    if (largest != i) 
-    { 
-      swap(arr[i], arr[largest]); 
-  
-      // Recursively heapify the affected sub-tree 
-      heapify(arr, n, largest); 
-    } 
-  } 
-  
-  // main function to do heap sort 
-  void heapSort(int arr[], int n) 
-  { 
-    // Build heap (rearrange array) 
-    for (int i = n / 2 - 1; i >= 0; i--) 
-      heapify(arr, n, i); 
-  
-    // One by one extract an element from heap 
-    for (int i=n-1; i>=0; i--) 
-    { 
-      // Move current root to end 
-      swap(arr[0], arr[i]); 
-  
-      // call max heapify on the reduced heap 
-      heapify(arr, i, 0); 
-    } 
-  } 
-  
+  heapSortCode = `
+  // C++ program for implementation of Heap Sort
+  #include <iostream>
+
+  using namespace std;
+
+  // To heapify a subtree rooted with node i which is
+  // an index in arr[]. n is size of heap
+  void heapify(int arr[], int n, int i)
+  {
+    int largest = i; // Initialize largest as root
+    int l = 2*i + 1; // left = 2*i + 1
+    int r = 2*i + 2; // right = 2*i + 2
+
+    // If left child is larger than root
+    if (l < n && arr[l] > arr[largest])
+      largest = l;
+
+    // If right child is larger than largest so far
+    if (r < n && arr[r] > arr[largest])
+      largest = r;
+
+    // If largest is not root
+    if (largest != i)
+    {
+      swap(arr[i], arr[largest]);
+
+      // Recursively heapify the affected sub-tree
+      heapify(arr, n, largest);
+    }
+  }
+
+  // main function to do heap sort
+  void heapSort(int arr[], int n)
+  {
+    // Build heap (rearrange array)
+    for (int i = n / 2 - 1; i >= 0; i--)
+      heapify(arr, n, i);
+
+    // One by one extract an element from heap
+    for (int i=n-1; i>=0; i--)
+    {
+      // Move current root to end
+      swap(arr[0], arr[i]);
+
+      // call max heapify on the reduced heap
+      heapify(arr, i, 0);
+    }
+  }
+
   /* A utility function to print array of size n */
-  void printArray(int arr[], int n) 
-  { 
-    for (int i=0; i<n; ++i) 
-      cout << arr[i] << " "; 
-    cout << "\\n"; 
-  } 
-  
-  // Driver program 
-  int main() 
-  { 
-    int arr[] = {12, 11, 13, 5, 6, 7}; 
-    int n = sizeof(arr)/sizeof(arr[0]); 
-  
-    heapSort(arr, n); 
-  
-    cout << "Sorted array is \\n"; 
-    printArray(arr, n); 
-  } 
-   
+  void printArray(int arr[], int n)
+  {
+    for (int i=0; i<n; ++i)
+      cout << arr[i] << " ";
+    cout << "\\n";
+  }
+
+  // Driver program
+  int main()
+  {
+    int arr[] = {12, 11, 13, 5, 6, 7};
+    int n = sizeof(arr)/sizeof(arr[0]);
+
+    heapSort(arr, n);
+
+    cout << "Sorted array is \\n";
+    printArray(arr, n);
+  }
+
   `;
 }

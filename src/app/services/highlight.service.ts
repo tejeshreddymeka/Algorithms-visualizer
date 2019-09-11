@@ -8,10 +8,10 @@ import 'prismjs/components/prism-cpp';
     providedIn: 'root',
 })
 export class HighlightService {
-    private languages:any = {
-        "cpp": prism.languages.cpp,
-    }
-    highlightCode(code:string, lang:string):string {
+    private languages: any = {
+        cpp: prism.languages.cpp,
+    };
+    highlightCode(code: string, lang: string): string {
         return prism.highlight(code, this.languages[lang]);
     }
 }

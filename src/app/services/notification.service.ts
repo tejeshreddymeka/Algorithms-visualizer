@@ -8,13 +8,11 @@ export class NotificationService {
   messages: string[] = [];
   constructor() { }
 
-  addMesage(message: string)
-  {
+  addMesage(message: string) {
     this.messages.push(message);
   }
 
-  popMessage()
-  {
-    this.messages.splice(0,1);
+  popMessage() {
+    this.messages.splice(0, 1);
   }
 }

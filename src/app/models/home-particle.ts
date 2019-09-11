@@ -1,4 +1,4 @@
-export class HomeParticle{
+export class HomeParticle {
     x: number;
     y: number;
     radius: number;

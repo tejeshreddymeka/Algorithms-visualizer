@@ -23,12 +23,6 @@
                             </option>
                         </select>
                     </div>
-                    <button class="btn btn-secondary col-lg-2 col-md-2 col-sm-4 navItem" 
-                        (click)="shuffleValues()"
-                        [disabled]="visualizing"
-                        >
-                       Shuffle 
-                    </button>  
                     <button class="btn btn-danger col-lg-2 col-md-2 col-sm-4 navItem" 
                         (click)="randomize()"
                         [disabled]="visualizing"
@@ -37,14 +31,14 @@
                     </button>  
                     <button 
                         [ngClass]="{'btn-success': !visualizing, 'btn-danger': visualizing, 'btn col-lg-1 col-md-2 col-sm-4 navItem': true}"
-                        (click)="toggleVisualize()">
+                        (click)="toggleVisualize();scrollToElement('#graph')">
                         <span *ngIf="visualizing; else visualize">Stop</span>
                         <ng-template #visualize>Visualize</ng-template> 
                     </button>  
                     <button 
                         [ngClass]="{'btn btn-info col-lg-1 col-md-2 col-sm-4 navItem': true}"
                         [disabled]="visualizing"
-                        (click)="toggleCustomPanel()">
+                        (click)="toggleCustomPanel();">
                         Custom
                     </button>  
                     <button 
@@ -79,23 +73,67 @@
                             <mat-slider thumbLabel 
                                 tickInterval="1" 
                                 min="1" 
-                                max="999" 
+                                max="200" 
                                 [value]="maxValue" 
                                 [disabled]="visualizing"
                                 (change)="updateMaxValue($event)">
                             </mat-slider>
                         </div>
                     </div>
+                    <div class="col-lg-1 col-md-2 col-sm-3 navItem p-0">
+                        <div class="row">
+                            <mat-radio-group [(ngModel)]="isDirected"
+                                (change) = "onRadioButtonChange('isDirected')" >
+                                <mat-radio-button [value]="1" class="radio-button"><span class="label-name">Directed</span></mat-radio-button>
+                                <mat-radio-button [value]="0" class="radio-button"><span class="label-name">Undirected</span></mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <!--
+                    <div class="col-lg-1 col-md-2 col-sm-3 navItem p-0">
+                        <div class="row">
+                            <mat-radio-group [(ngModel)]="isCyclic">
+                                <mat-radio-button [value]="1" class="radio-button"><span class="label-name">Cyclic</span></mat-radio-button>
+                                <mat-radio-button [value]="0" class="radio-button"><span class="label-name">Acyclic</span></mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    <div class="col-lg-1 col-md-2 col-sm-3 navItem p-0">
+                        <div class="row">
+                            <mat-radio-group [(ngModel)]="isConnected">
+                                <mat-radio-button [value]="1" class="radio-button"><span class="label-name">Connected</span></mat-radio-button>
+                                <mat-radio-button [value]="0" class="radio-button"><span class="label-name">Disconnected</span></mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+                    </div>
+                    -->
                 </div>
             </div>
         </nav>
     </div>
     <div class="section">
         <div class="custom-panel" *ngIf="customPanelOpened">
-            <span class="text-danger">Need to work on it</span>
+            <input 
+                type="number"
+                min="1"
+                max="999"
+                placeholder="Enter custom value"
+                [(ngModel)]="customValue"
+                class="custom-value" />
+            <button 
+                (click)="addCustomValue()"
+                class="edit-button">
+                <span>+</span>
+            </button>
+            <button 
+                (click)="removeCustomValue()"
+                class="edit-button">
+                <span>-</span>
+            </button>
         </div>
         <app-graph
             #graph
+            id="graph"
             (graphReady) = "onGraphReady($event)"
             (nodeSelected) = "onNodeSelected($event)"
         ></app-graph>
